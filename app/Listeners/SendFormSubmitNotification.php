@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\FormSubmitted;
 use App\Mail\FormSubmitted as MailFormSubmitted;
 use Illuminate\Support\Facades\Mail;
+use Exception;
 
 class SendFormSubmitNotification
 {
@@ -28,7 +29,7 @@ class SendFormSubmitNotification
     {
         try {
             Mail::to($event->user)->send(new MailFormSubmitted($event->form));
-        } catch (\Exception$e) {
+        } catch (Exception $e) {
             logger()->critical($e);
         }
     }
