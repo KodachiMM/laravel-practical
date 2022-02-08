@@ -159,4 +159,5 @@ return [
 
     'attributes' => [],
 
+    'phone' => 'Invalid phone number.',
 ];
