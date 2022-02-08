@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'], function () {
+    Route::middleware('guest')->group(function () {
+        Route::post('login', [LoginController::class, 'store']);
+        Route::post('register', RegisterController::class);
+    });
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('user', UserController::class);
+        Route::get('user/forms', [FormController::class, 'getAllByCurrentUser']);
+
+        Route::resource('forms', FormController::class);
+
+        Route::post('logout', [LoginController::class, 'destroy']);
+    });
 });
